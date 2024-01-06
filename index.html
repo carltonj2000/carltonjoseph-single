@@ -4,12 +4,25 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/Paw0.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light dark" />
     <meta name="description" content="Carlton Joseph's Résumé" />
 
     <title>Carlton's Résumé</title>
     <style>
-      *,
+      :root {
+        --clr-light: #fefefe;
+        --clr-dark: #222;
+        --clr-card-light: #eee;
+        --clr-card-dark: #444;
+        --foreground: var(--clr-dark);
+        --background: var(--clr-light);
+        --card: var(--clr-card-light);
+        color-scheme: light dark;
+      }
+      .darkmode {
+        --foreground: var(--clr-light);
+        --background: var(--clr-dark);
+        --card: var(--clr-card-dark);
+      }
       *::before,
       *::after {
         box-sizing: border-box;
@@ -20,6 +33,8 @@
         font: inherit;
       }
       body {
+        background: var(--background);
+        color: var(--foreground);
         min-height: 100svh;
         line-height: 1.5;
         -webkit-font-smoothing: antialiased;
@@ -76,7 +91,7 @@
         font-weight: 500;
       }
       .card {
-        background-color: #eee;
+        background-color: var(--card);
         border-radius: 1rem;
         margin: 0.75rem 0.25rem 0 0.25rem;
         padding: 0.5rem 1rem;
@@ -86,14 +101,34 @@
           0 0.9px 1.5px hsla(0, 0%, 0%, 0.045),
           0 3.5px 6px hsla(0, 0%, 0%, 0.09);
       }
-      @media (prefers-color-scheme: dark) {
-        .card {
-          background-color: #444;
-        }
+      button {
+        position: absolute;
+        z-index: 100;
+        width: 2rem;
+        height: 2rem;
+        right: 0.5rem;
+        top: 0.5rem;
+        color: var(--foreground);
+        border: 2px solid currentColor;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      svg {
+        margin: 0.1rem;
       }
     </style>
   </head>
   <body>
+    <button id="dark-mode-toggle" class="dark-mode-toggle">
+      <svg width="80%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
+        <path
+          fill="currentColor"
+          d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
+          transform="translate(-8 -8)"
+        />
+      </svg>
+    </button>
     <div class="content">
       <h1>Carlton Joseph</h1>
       <p><span class="bold">Phone:</span> 714-721-8729</p>
@@ -134,5 +169,33 @@
         </p>
       </div>
     </div>
+    <script>
+      let darkMode = localStorage.getItem("darkMode");
+
+      const darkModeToggle = document.querySelector("#dark-mode-toggle");
+
+      const enableDarkMode = () => {
+        document.body.classList.add("darkmode");
+        localStorage.setItem("darkMode", "enabled");
+      };
+
+      const disableDarkMode = () => {
+        document.body.classList.remove("darkmode");
+        localStorage.setItem("darkMode", null);
+      };
+
+      if (darkMode === "enabled") {
+        enableDarkMode();
+      }
+
+      darkModeToggle.addEventListener("click", () => {
+        darkMode = localStorage.getItem("darkMode");
+        if (darkMode !== "enabled") {
+          enableDarkMode();
+        } else {
+          disableDarkMode();
+        }
+      });
+    </script>
   </body>
 </html>
